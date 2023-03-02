@@ -1,14 +1,11 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:amazon_clone/common/widgets/bottom_bar.dart';
 import 'package:amazon_clone/constants/error_handling.dart';
 import 'package:amazon_clone/constants/global_variables.dart';
 import 'package:amazon_clone/constants/utils.dart';
-import 'package:amazon_clone/features/home/screens/home_screen.dart';
 import 'package:amazon_clone/models/user.dart';
 import 'package:amazon_clone/providers/user_provider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
@@ -73,7 +70,8 @@ class AuthService {
                 .setUser(response.body);
             print('999999999999999999999999999');
             print(response.body);
-            prefs.setString('x-auth-token', jsonDecode(response.body)['token']);
+            await prefs.setString(
+                'x-auth-token', jsonDecode(response.body)['token']);
 
             // Navigator.push(
             //     context, MaterialPageRoute(builder: (ctx) => BotttomBar()));
@@ -82,11 +80,8 @@ class AuthService {
                 MaterialPageRoute(builder: (ctx) => BotttomBar()),
                 (route) => false);
             // Navigator.pushNamedAndRemoveUntil(
-            //     context, BotttomBar.routeName, (Route<dynamic> route) => false);
-            // Navigator.pushNamed(
-            //   context,
-            //   BotttomBar.routeName,
-            // );
+            //     context, BotttomBar.routeName, ( route) => false);
+
             // showSnackBar(context, "login successfully");
           });
     } catch (e) {

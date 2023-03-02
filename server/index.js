@@ -1,9 +1,11 @@
 //IMPORT FROM PACKAGES
 const express = require("express");
 const mongoose = require("mongoose");
+const adminRoute = require("./routes/admin");
 
 //IMPORT FROM OTHER FILES
 const authRouter = require("./routes/auth");
+const productRouter = require("./routes/product");
 //INIT
 const app = express();
 const PORT = 3000;
@@ -13,6 +15,8 @@ const DB =
 //MIDDLEWARE
 app.use(express.json()); //used when  Cannot destructure property 'name' of 'req.body' as it is undefined.
 app.use(authRouter);
+app.use(adminRoute);
+app.use(productRouter);
 
 //Connections
 mongoose

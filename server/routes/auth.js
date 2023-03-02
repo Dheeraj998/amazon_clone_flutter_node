@@ -41,10 +41,9 @@ authRouter.post("/api/signin", async (req, res) => {
     const { email, password } = req.body;
     console.log(req.body);
     const user = await User.findOne({ email });
+    console.log("#################", user);
     if (!user) {
-      return res
-        .statusCode(400)
-        .json({ msg: "User with email doesnot exist!" });
+      return res.status(400).json({ msg: "User with email doesnot exist!" });
     }
     const isMatch = bcrypt.compare(password, user.password);
     if (!isMatch) {
@@ -59,7 +58,7 @@ authRouter.post("/api/signin", async (req, res) => {
 });
 
 //token isValid
-authRouter.post("/tokenIsVAlid", async (req, res) => {
+authRouter.post("/tokenIsValid", async (req, res) => {
   try {
     const token = req.header("x-auth-token");
     if (!token) return res.json(false);
@@ -76,6 +75,6 @@ authRouter.post("/tokenIsVAlid", async (req, res) => {
 //get user data
 authRouter.get("/", auth, async (req, res) => {
   const user = await User.findById(req.user);
-  res.json({ user, token: req.token });
+  res.json({ ...user._doc, token: req.token });
 });
 module.exports = authRouter;

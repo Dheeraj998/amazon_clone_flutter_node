@@ -11,18 +11,21 @@ class BelowAppBar extends StatelessWidget {
     final user = Provider.of<UserProvider>(context).user;
     print(user.name);
     return Container(
-      decoration: BoxDecoration(gradient: GlobalVariables.appBarGradient),
-      padding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
+      decoration: const BoxDecoration(gradient: GlobalVariables.appBarGradient),
+      padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
       child: Row(
         children: [
           RichText(
             text: TextSpan(
                 text: 'Hello, ',
-                style: TextStyle(color: Colors.black, fontSize: 22),
+                style: const TextStyle(color: Colors.black, fontSize: 22),
                 children: [
                   TextSpan(
                       text: user.name,
-                      style: TextStyle(color: Colors.black, fontSize: 22))
+                      style: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 22,
+                          fontWeight: FontWeight.w600))
                 ]),
           ),
         ],

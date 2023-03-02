@@ -11,7 +11,7 @@ const auth = async (req, res, next) => {
         .status(401)
         .json({ msg: "Token verification failed,authorization denied" });
 
-    //store the id and token to this requset so we can ccess using req.
+    //store the id and token to this requset so we can access using req.
     req.user = verified.id;
     req.token = token;
     next();

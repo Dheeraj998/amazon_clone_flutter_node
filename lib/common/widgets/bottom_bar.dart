@@ -65,7 +65,7 @@ class _BotttomBarState extends State<BotttomBar> {
                                 ? GlobalVariables.selectedNavBarColor
                                 : GlobalVariables.backgroundColor,
                             width: bottomBarBorderWidth))),
-                child: Icon(Icons.person_outline_outlined),
+                child: const Icon(Icons.person_outline_outlined),
               )),
           BottomNavigationBarItem(
               label: '',
@@ -81,8 +81,8 @@ class _BotttomBarState extends State<BotttomBar> {
                 child: Badge(
                     elevation: 0,
                     badgeColor: Colors.white,
-                    badgeContent: Text('5'),
-                    child: Icon(Icons.shopping_cart_outlined)),
+                    badgeContent: const Text('5'),
+                    child: const Icon(Icons.shopping_cart_outlined)),
               ))
         ],
       ),
