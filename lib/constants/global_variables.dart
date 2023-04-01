@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 // String uri = 'http://10.106.5.91:3000';
 
 //cittic
-String uri = 'http://192.168.0.207:30000';
+String uri = 'http://192.168.0.207:3003';
 
+//room
+// String uri='http://192.168.29.249:3000';
 class GlobalVariables {
   // COLORS
   static const appBarGradient = LinearGradient(

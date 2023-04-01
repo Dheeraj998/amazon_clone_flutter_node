@@ -10,7 +10,7 @@ class SingleProduct extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 5),
+      padding: const EdgeInsets.symmetric(horizontal: 8),
       child: DecoratedBox(
         decoration: BoxDecoration(
             border: Border.all(
@@ -24,7 +24,7 @@ class SingleProduct extends StatelessWidget {
           padding: const EdgeInsets.all(10),
           child: Image.network(
             img,
-            fit: BoxFit.fitHeight,
+            fit: BoxFit.cover,
             width: 180,
           ),
         ),

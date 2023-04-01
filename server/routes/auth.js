@@ -37,6 +37,7 @@ authRouter.post("/api/signup", async (req, res) => {
 
 //signin
 authRouter.post("/api/signin", async (req, res) => {
+  console.log("here");
   try {
     const { email, password } = req.body;
     console.log(req.body);
@@ -59,6 +60,7 @@ authRouter.post("/api/signin", async (req, res) => {
 
 //token isValid
 authRouter.post("/tokenIsValid", async (req, res) => {
+  console.log("herererre");
   try {
     const token = req.header("x-auth-token");
     if (!token) return res.json(false);

@@ -27,8 +27,8 @@ class AuthService {
           password: password,
           address: '',
           type: '',
+          cart: [],
           token: '');
-
       http.Response response = await http.post(
         Uri.parse("$uri/api/signup"),
         body: user.toJson(),
@@ -68,7 +68,6 @@ class AuthService {
             SharedPreferences prefs = await SharedPreferences.getInstance();
             Provider.of<UserProvider>(context, listen: false)
                 .setUser(response.body);
-            print('999999999999999999999999999');
             print(response.body);
             await prefs.setString(
                 'x-auth-token', jsonDecode(response.body)['token']);
@@ -91,9 +90,11 @@ class AuthService {
 
   //get user data
   void getUserData(BuildContext context) async {
+    print("########################");
     try {
       SharedPreferences preferences = await SharedPreferences.getInstance();
       String? token = preferences.getString('x-auth-token');
+
       if (token == null) {
         preferences.setString('x-auth-token', '');
       }
@@ -106,6 +107,7 @@ class AuthService {
       );
       var response = jsonDecode(tokenRes.body);
       if (response == true) {
+        print("resp truuu");
         http.Response userResp = await http.get(
           Uri.parse('$uri/'),
           headers: <String, String>{
@@ -113,11 +115,14 @@ class AuthService {
             'x-auth-token': token
           },
         );
+        print("userResp  $userResp");
         var userProvider = Provider.of<UserProvider>(context, listen: false);
+        print(userProvider.user.name);
         userProvider.setUser(userResp.body);
       }
     } catch (e) {
       showSnackBar(context, e.toString());
+      // print(e.toString());
     }
   }
 }

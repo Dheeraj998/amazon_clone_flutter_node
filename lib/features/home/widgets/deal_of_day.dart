@@ -1,75 +1,97 @@
+import 'package:amazon_clone/common/widgets/loader.dart';
+import 'package:amazon_clone/features/home/services/home_services.dart';
+import 'package:amazon_clone/features/product_details/screens/product_details_screen.dart';
+import 'package:amazon_clone/models/product.dart';
 import 'package:flutter/material.dart';
 
-class DealOfDay extends StatelessWidget {
+class DealOfDay extends StatefulWidget {
   const DealOfDay({Key? key}) : super(key: key);
 
   @override
+  State<DealOfDay> createState() => _DealOfDayState();
+}
+
+class _DealOfDayState extends State<DealOfDay> {
+  Product? product;
+  final HomeServices homeServices = HomeServices();
+  @override
+  void initState() {
+    super.initState();
+    fetchDealOfDay();
+  }
+
+  fetchDealOfDay() async {
+    product = await homeServices.fetchDealOfDay(context: context);
+    setState(() {});
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          alignment: Alignment.topLeft,
-          padding: const EdgeInsets.only(left: 10, top: 15),
-          child: const Text(
-            'Deal of the day',
-            style: TextStyle(fontSize: 20),
-          ),
-        ),
-        Image.network(
-            'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bGFwdG9wfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=600&q=60',
-            height: 235,
-            fit: BoxFit.fitHeight),
-        Container(
-          alignment: Alignment.topLeft,
-          padding: const EdgeInsets.only(left: 15),
-          child: const Text('\$999'),
-        ),
-        Container(
-          alignment: Alignment.topLeft,
-          padding: const EdgeInsets.only(left: 15, top: 5, right: 40),
-          child: const Text(
-            'Mac',
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ),
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Image.network(
-                  'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bGFwdG9wfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=600&q=60',
-                  fit: BoxFit.fitWidth,
-                  height: 100,
-                  width: 100),
-              Image.network(
-                  'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bGFwdG9wfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=600&q=60',
-                  fit: BoxFit.fitWidth,
-                  height: 100,
-                  width: 100),
-              Image.network(
-                  'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bGFwdG9wfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=600&q=60',
-                  fit: BoxFit.fitWidth,
-                  height: 100,
-                  width: 100),
-              Image.network(
-                  'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bGFwdG9wfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=600&q=60',
-                  fit: BoxFit.fitWidth,
-                  height: 100,
-                  width: 100)
-            ],
-          ),
-        ),
-        Container(
-          padding: EdgeInsets.symmetric(vertical: 15).copyWith(left: 15),
-          alignment: Alignment.topLeft,
-          child: Text(
-            'See all deals',
-            style: TextStyle(color: Colors.cyan[800]),
-          ),
-        )
-      ],
-    );
+    return product == null
+        ? const Loader()
+        : product!.name.isEmpty
+            ? const SizedBox()
+            : Column(
+                children: [
+                  Container(
+                    alignment: Alignment.topLeft,
+                    padding: const EdgeInsets.only(left: 10, top: 15),
+                    child: const Text(
+                      'Deal of the day',
+                      style: TextStyle(fontSize: 20),
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  InkWell(
+                    onTap: () {
+                      Navigator.of(context).pushNamed(
+                          ProductDetailsScreen.routeName,
+                          arguments: product);
+                    },
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Image.network(product!.images[0],
+                            height: 235,
+                            width: double.infinity,
+                            fit: BoxFit.contain),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.topLeft,
+                    padding: const EdgeInsets.only(left: 15),
+                    child: Text('\$${product!.price}'),
+                  ),
+                  Container(
+                    alignment: Alignment.topLeft,
+                    padding: const EdgeInsets.only(left: 15, top: 5, right: 40),
+                    child: Text(
+                      product!.name,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: product!.images
+                            .map((e) => Image.network(e,
+                                fit: BoxFit.contain, height: 100, width: 100))
+                            .toList()),
+                  ),
+                  Container(
+                    padding:
+                        EdgeInsets.symmetric(vertical: 15).copyWith(left: 15),
+                    alignment: Alignment.topLeft,
+                    child: Text(
+                      'See all deals',
+                      style: TextStyle(color: Colors.cyan[800]),
+                    ),
+                  )
+                ],
+              );
   }
 }

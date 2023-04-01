@@ -3,15 +3,17 @@ import 'package:amazon_clone/constants/global_variables.dart';
 import 'package:amazon_clone/features/admin/screens/admin_screen.dart';
 import 'package:amazon_clone/features/auth/screens/auth_screen.dart';
 import 'package:amazon_clone/features/auth/services/auth_service.dart';
+import 'package:amazon_clone/providers/admin_provider.dart';
 import 'package:amazon_clone/providers/user_provider.dart';
 import 'package:amazon_clone/router.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  runApp(MultiProvider(
-      providers: [ChangeNotifierProvider(create: (context) => UserProvider())],
-      child: const MyApp()));
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(create: (context) => UserProvider()),
+    ChangeNotifierProvider(create: (context) => AdminProvider())
+  ], child: const MyApp()));
 }
 
 class MyApp extends StatefulWidget {
@@ -46,9 +48,9 @@ class _MyAppState extends State<MyApp> {
                 primary: GlobalVariables.secondaryColor)),
         onGenerateRoute: (settings) => generateRoute(settings),
         home: Provider.of<UserProvider>(context).user.token.isNotEmpty
-            ? Provider.of<UserProvider>(context).user.name == "dheerajk98"
-                ? const BotttomBar()
-                : AuthScreen()
+            ? Provider.of<UserProvider>(context).user.type == "admin"
+                ? const AdminScreen()
+                : BotttomBar()
             : const AuthScreen());
   }
 }

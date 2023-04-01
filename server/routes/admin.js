@@ -1,6 +1,6 @@
 const express = require("express");
 const admin = require("../middlewares/admin");
-const Product = require("../models/product");
+const { Product } = require("../models/product");
 
 const adminRoute = express.Router();
 
@@ -39,6 +39,8 @@ adminRoute.post("/admin/delete-product", admin, async (req, res) => {
     const product = await Product.findByIdAndDelete(id);
     // product = await product.save();
     res.json(product);
-  } catch (e) {}
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
 });
 module.exports = adminRoute;

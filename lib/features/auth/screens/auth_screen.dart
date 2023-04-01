@@ -34,6 +34,7 @@ class _AuthScreenState extends State<AuthScreen> {
         email: _emailController.text,
         password: _passWordController.text,
         name: _nameController.text);
+    FocusManager.instance.primaryFocus?.unfocus();
   }
 
   void signInUser(BuildContext context) {
@@ -92,14 +93,27 @@ class _AuthScreenState extends State<AuthScreen> {
                       child: Column(
                         children: [
                           CustomTextField(
-                              controller: _nameController, hintText: " Name"),
+                            controller: _nameController,
+                            hintText: " Name",
+                            textInputAction: TextInputAction.next,
+                          ),
                           const SizedBox(height: 10),
                           CustomTextField(
-                              controller: _emailController, hintText: " Email"),
+                            controller: _emailController,
+                            hintText: " Email",
+                            textInputAction: TextInputAction.next,
+                          ),
                           const SizedBox(height: 10),
                           CustomTextField(
-                              controller: _passWordController,
-                              hintText: " Password"),
+                            controller: _passWordController,
+                            hintText: " Password",
+                            onFieldSubmitted: (submitted) {
+                              if (_signupFormKey.currentState!.validate()) {
+                                signUpUser();
+                              }
+                            },
+                            textInputAction: TextInputAction.done,
+                          ),
                           const SizedBox(height: 10),
                           CustomButton(
                               text: "signup",
@@ -137,19 +151,32 @@ class _AuthScreenState extends State<AuthScreen> {
                         children: [
                           const SizedBox(height: 10),
                           CustomTextField(
-                              controller: _emailController, hintText: " Email"),
+                            controller: _emailController,
+                            hintText: " Email",
+                            textInputAction: TextInputAction.next,
+                          ),
                           const SizedBox(height: 10),
                           CustomTextField(
-                              controller: _passWordController,
-                              hintText: " Password"),
+                            controller: _passWordController,
+                            hintText: " Password",
+                            textInputAction: TextInputAction.done,
+                            onFieldSubmitted: (p0) {
+                              if (_signinFormKey.currentState!.validate()) {
+                                signInUser(context);
+                              }
+                            },
+                          ),
                           const SizedBox(height: 10),
-                          CustomButton(
-                              text: "signin",
-                              onTap: () {
-                                if (_signinFormKey.currentState!.validate()) {
-                                  signInUser(context);
-                                }
-                              })
+                          AnimatedContainer(
+                            duration: Duration(seconds: 2),
+                            child: CustomButton(
+                                text: "signin",
+                                onTap: () {
+                                  if (_signinFormKey.currentState!.validate()) {
+                                    signInUser(context);
+                                  }
+                                }),
+                          )
                         ],
                       ),
                     ),

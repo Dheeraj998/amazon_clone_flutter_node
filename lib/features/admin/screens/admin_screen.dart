@@ -1,5 +1,6 @@
 import 'package:amazon_clone/constants/global_variables.dart';
 import 'package:amazon_clone/features/admin/screens/posts_screen.dart';
+import 'package:amazon_clone/features/auth/screens/auth_screen.dart';
 import 'package:flutter/material.dart';
 
 class AdminScreen extends StatefulWidget {
@@ -50,10 +51,16 @@ class _AdminScreenState extends State<AdminScreen> {
                   color: Colors.black,
                 ),
               ),
-              const Text(
-                'Admin',
-                style:
-                    TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                      AuthScreen.routeName, (route) => false);
+                },
+                child: Text(
+                  'Admin',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold, color: Colors.black),
+                ),
               )
             ],
           ),

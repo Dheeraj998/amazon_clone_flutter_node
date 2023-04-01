@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:amazon_clone/constants/error_handling.dart';
 import 'package:amazon_clone/constants/global_variables.dart';
+import 'package:amazon_clone/providers/admin_provider.dart';
 import 'package:amazon_clone/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -52,6 +53,7 @@ class AdminServices {
           onSuccess: () {
             showSnackBar(context, 'Product Added SUccessFully');
             Navigator.pop(context);
+            fetchAllProduct(context);
           });
     } catch (e) {
       showSnackBar(context, e.toString());
@@ -59,8 +61,10 @@ class AdminServices {
   }
 
   //get all product
-  Future<List<Product>> fetchAllProduct(BuildContext context) async {
+  void fetchAllProduct(BuildContext context) async {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
+    final adminProvider = Provider.of<AdminProvider>(context, listen: false);
+
     List<Product> productList = [];
     try {
       http.Response resp = await http.get(
@@ -85,11 +89,13 @@ class AdminServices {
               );
             }
           });
+      print(productList);
     } catch (e) {
       showSnackBar(context, e.toString());
       debugPrint(e.toString());
     }
-    return productList;
+    // return productList;
+    adminProvider.getAllProducts(productList);
   }
 
   //delete product
