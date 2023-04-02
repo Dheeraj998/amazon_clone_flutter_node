@@ -15,8 +15,11 @@ class CartScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    int sum = 0;
     final user = context.watch<UserProvider>().user;
-
+    user.cart
+        .map((e) => sum += e['quantity'] * e['product']['price'] as int)
+        .toList();
     return Scaffold(
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(60),
@@ -84,16 +87,14 @@ class CartScreen extends StatelessWidget {
             children: [
               AddressBox(),
               CartSubTotal(),
-              GestureDetector(
-                onTap: () =>
-                    Navigator.of(context).pushNamed(AdddressScreen.routeName),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: CustomButton(
-                    text: "Proceed to buy (${user.cart.length} items)",
-                    onTap: () {},
-                    color: Colors.yellow[600],
-                  ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: CustomButton(
+                  text: "Proceed to buy (${user.cart.length} items)",
+                  onTap: () => Navigator.of(context).pushNamed(
+                      AdddressScreen.routeName,
+                      arguments: sum.toString()),
+                  color: Colors.yellow[600],
                 ),
               ),
               SizedBox(height: 15),
